@@ -1,0 +1,62 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Timeline Simple Demo</title>
+  
+  
+  <!-- Vendor CSS -->
+  <link rel="stylesheet" href="vendor/timeline/css/timeline.css">
+  
+  <!-- Recline CSS -->
+  <link rel="stylesheet" href="css/timeline.css">
+
+  <!-- Vendor JS - general dependencies -->
+  <script src="vendor/jquery/1.7.1/jquery.js" type="text/javascript"></script>
+  <script src="vendor/underscore/1.4.4/underscore.js" type="text/javascript"></script>
+  <script src="vendor/backbone/1.0.0/backbone.js" type="text/javascript"></script>
+  <script src="vendor/mustache/0.5.0-dev/mustache.js" type="text/javascript"></script>
+  
+  <!-- Vendor JS - timeline dependencies -->
+  <script type="text/javascript" src="vendor/moment/2.0.0/moment.js"></script>
+  <script type="text/javascript" src="vendor/timeline/js/timeline.js"></script>
+
+  <!-- Recline JS (combined distribution, all views) -->
+  <script src="dist/recline.js" type="text/javascript"></script>
+</head>
+
+<body>
+  <style type="text/css">#mytimeline .recline-timeline { height: 400px; }</style>
+  <div id="mytimeline"></div>
+  <div style="clear: both;"></div> <!-- needed? -->
+  
+  <script>
+  var data = [
+    {id: 0, date: '2011-01-01', x: 1, y: 2, z: 3, country: 'DE', geo: {lat:52.56, lon:13.40} },
+    {id: 1, date: '2011-02-02', x: 2, y: 4, z: 24, country: 'UK', geo: {lat:54.97, lon:-1.60}},
+    {id: 2, date: '2011-03-03', x: 3, y: 6, z: 9, country: 'US', geo: {lat:40.00, lon:-75.5}},
+    {id: 3, date: '2011-04-04', x: 4, y: 8, z: 6, country: 'UK', geo: {lat:57.27, lon:-6.20}},
+    {id: 4, date: '2011-05-04', x: 5, y: 10, z: 15, country: 'UK', geo: {lat:51.58, lon:0}},
+    {id: 5, date: '2011-06-02', x: 6, y: 12, z: 18, country: 'DE', geo: {lat:51.04, lon:7.9}}
+  ];
+
+  var dataset = new recline.Model.Dataset({
+    records: data
+  });
+  
+  var $el = $('#mytimeline');
+  var timeline = new recline.View.Timeline({
+    model: dataset
+  });
+  $el.append(timeline.el);
+  // set the headline/title for each record with x column
+  timeline.convertRecord = function(record, fields) {
+    var out = this._convertRecord(record);
+    if (out) {
+      out.headline = record.get('x').toString();
+    }
+    return out;
+  }
+  timeline.render();
+  </script>
+</body>
+</html>
